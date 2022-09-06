@@ -1,0 +1,12 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザ
+      book: 本
+    attributes:
+      user:
+        name: 名前
+        introduction: 自己紹介文
+      book:
+        title: 本のタイトル
+        body: 本の内容

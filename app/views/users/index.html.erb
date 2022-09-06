@@ -1,0 +1,15 @@
+<div class="container px-5 px-sm-0">
+ <%= render 'layouts/errors', obj: @user %>
+ <div class="row">
+  <!-- sidebarの呼び出し -->
+  <div class="col-md-3">
+   <%= render 'layouts/sidebar', user: @user, book: @book  %>
+  </div>
+  <div class="col-md-9">
+   <h2>Users</h2>
+   <table class="table table-hover table-inverse"><!--タイトルや本文など今まで登録したすべての情報を表示(収納)する枠-->
+    <%= render 'index',users: @users %>
+   </table>
+  </div>
+ </div>
+</div>

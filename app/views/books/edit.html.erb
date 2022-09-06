@@ -1,0 +1,12 @@
+  <div class="container">
+   <!--エラー表示-->
+   <%= render 'layouts/errors', obj: @book %>
+   <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+  	  <h1>Editing Book</h1>
+    	 <%= render 'form', book: @book %>
+      <%= link_to "Show", book_path(@book.id) %><!--showに戻る-->
+      <%= link_to "Back", books_path %><!--indexに戻る-->
+    </div>
+   </div>
+  </div>

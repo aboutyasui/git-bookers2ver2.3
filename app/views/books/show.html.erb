@@ -1,0 +1,50 @@
+ <div class="container px-5 px-sm-0">
+  <!--エラー表示-->
+  <%= render 'layouts/errors', obj: @book %>
+  <div class="row">
+   <div class="col-md-3">
+    <!-- sidebarの呼び出し -->
+    <%= render 'layouts/sidebar', user: @user , book: @books %><!--@books = Book.newのため-->
+   </div>
+   <div class="col-md-8 offset-md-1">
+    <h2>Book detail</h2>
+    <table class="table table-hover table-inverse">
+     <tbody>
+      <tr>
+       <td>
+        <%= link_to user_path(@book.user) do %>
+         <%= image_tag @book.user.get_profile_image(100,100) %><br>
+         <%= @book.user.name %>
+        <% end %>
+       </td>
+       <td>
+        <%= link_to book_path(@book) do %>
+         <%= @book.title %>
+        <% end %>
+       </td>
+       <td><%= @book.body %></td>
+       <td class="book-comments-counter">
+        <%= render "book_comments/counter", book: @book %>
+       </td>
+       <td>
+        <div class="favorite_btn_<%=@book.id %>">
+         <%= render "favorites/btn", book: @book %>
+        </div>
+       </td>
+       <td>
+        <% if @book.user == current_user %>
+         <%= link_to "Edit",edit_book_path(@book), class:'btn btn-sm btn-success'%>
+         <%= link_to "Destroy",book_path(@book), data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger",method: :delete  %>
+        <% end %>
+       </td>
+      </tr>
+     </tbody>
+    </table>
+    <div class="book-comments-index">
+     <%= render "book_comments/index", book: @book %>
+    </div>
+    
+    <%= render "book_comments/form", book: @book, book_comment: @book_comment %>
+   </div>
+  </div>
+ </div>
