@@ -19,13 +19,20 @@ class BooksController < ApplicationController
 
   def index
    @user = current_user
-   @books = Book.all
+   
+   to  = Time.current.at_end_of_day
+   from  = (to - 6.day).at_beginning_of_day #一週間分のレコードを取得
+   books = Book.includes(:favorited_users).sort {|a,b|b.favorited_users.includes(:favorites).where(created_at: from...to).size <=> a.favorited_users.includes(:favorites).where(created_at: from...to).size}
+   #books = Book.includes(:favorited_users).```では、booksモデルからデータを取得するときに、favorited_usersモデルのデータもまとめて取得しています。
+   #sortとは、昇順or降順に並び替えするメソッド(今回はb→aに降順)
+   #b.favorited_users.size,a.favorited_users.sizeが表しているのはそれぞれ各投稿のいいね数。
+   #where(created_at: from...to)は過去一週間
+   @books=Kaminari.paginate_array(books).page(params[:page]).per(5)#ページネーションを使ってbooksを表示
+   #Kaminari.paginate_arrayは配列オブジェクト(books)をページ付け可能配列に変換してくれます
+   #.per(5)→１ページに表示されるのは５つ分まで
+   
    @book = Book.new
    @book_comments = BookComment.all#コメントを一覧ページに表示するためのインスタンス変数を定義する
-   
-   #@books.each do |book|
-   # pp favorite_btn
-   # end
   end
 
   def show

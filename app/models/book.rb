@@ -3,27 +3,15 @@ class Book < ApplicationRecord
   belongs_to :user##1:N の「N」側にあたるモデルに、belongs_to を記載する必要がある
   has_many :book_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
-
+  has_many :favorited_users, through: :favorites, source: :user 
+  
   #バリデーション
    validates :title,presence: true
    validates :body, length: { maximum: 200 },presence: true
    #validatesでは対象となる項目を指定し、入力されたデータのpresence(存在)をチェックする
    #trueと書くとデータが存在しなければならないという設定になる
-
   def favorited_by?(user)#このメソッドで、引数で渡されたユーザidがFavoritesテーブル内に存在（exists?）するかどうかを調べます。
     favorites.exists?(user_id: user.id)
-  end
-
-  def self.search_for(content, method)
-    if method == 'perfect'
-      Book.where(title: content)
-    elsif method == 'forward'
-      Book.where('title LIKE ?', content+'%')
-    elsif method == 'backward'
-      Book.where('title LIKE ?', '%'+content)
-    else
-      Book.where('title LIKE ?', '%'+content+'%')
-    end
   end
 
   def get_image

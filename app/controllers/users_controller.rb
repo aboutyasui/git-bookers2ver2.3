@@ -4,8 +4,19 @@ class UsersController < ApplicationController
   def index
    @user = current_user
    @users = User.all
+   #@users = User.where.not(id: current_user.id)#current_user以外のすべてのuser.idを取得する
    @book = Book.new
   end
+
+  #def followings#(youtubeより参照)
+   #user = User.find(params[:id])#URLよりユーザー情報を取得
+   #@users = user.followings#あるユーザー(user)をフォローしている人(followings)全員を取得する
+  #end
+
+  #def followers#(youtubeより参照)
+    #user = User.find(params[:id])#URLよりユーザー情報を取得
+    #@users = user.followers#あるユーザー(user)がフォローしている人(followers)全員を取得する
+  #end
 
   def show
    @user = User.find(params[:id])#1:N→user:books

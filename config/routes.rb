@@ -11,9 +11,9 @@ Rails.application.routes.draw do
   resources :users,only: [:index, :show, :edit, :update] do #投稿には、「新規投稿」「一覧」「詳細機能」「削除」「編集」「更新」しか使わないため
    resources :relationships, only: [:create, :destroy] do
       member do
-        get 'following' => 'relationships#followings', as:'followings'#フォローされた方の情報を取得
-        get 'followers' => 'relationships#followers', as:'followers'#フォローした方の情報を取得
+        get 'following' => 'relationships#followings', as:'followings'#フォローされた方の情報を取得（書き方の1通り目）
       end
+      get :followers, on: :member #フォローした方の情報を取得(書き方の2通り目)
     end
   end
   patch 'users/:id' => 'users#update', as: 'update_user'

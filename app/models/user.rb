@@ -9,6 +9,7 @@ class User < ApplicationRecord
   #今回であれば「Userが削除された時に、そのUserが投稿したPostImageが全て削除される」という処理
   has_many :book_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  has_many :favorited_users, through: :favorites, source: :user
   has_one_attached :profile_image
 
   #バリデーション
@@ -20,13 +21,13 @@ class User < ApplicationRecord
    #文字数を検証することを指定する「length」と、その最小値（minimum）と最大値（maximum）を設定します。
 
   #以下ネットより参照
-  #userﾃｰﾌﾞﾙ→relationﾃｰﾌﾞﾙ
+  #フォローする側からのhas_many
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
-  #relationﾃｰﾌﾞﾙ→followedﾃｰﾌﾞﾙ、followed_idを持って来る
+  #あるユーザー(followings(任意でOK))が中間テーブルを介して(relationships),フォローしてる人(foolowed(任意でOK))を全部取ってくることができる
   has_many :followings, through: :relationships, source: :followed
-  #followerﾃｰﾌﾞﾙ(本当はuser)→re_relationﾃｰﾌﾞﾙ(本当relation)へfollowed_idを送る(参照）
+  #フォローされる側からのhas_many
   has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id",  dependent: :destroy
-  #re_relationﾃｰﾌﾞﾙ→userﾃｰﾌﾞﾙへfollower_idを持って来る
+  #あるユーザー(followers(任意でOK))を中間テーブルを介して(reverse_of_relationships),フォローしてくれている人(follower(任意でOK))を全部持ってこれる
   has_many :followers, through: :reverse_of_relationships, source: :follower
 
   # ユーザーをフォローする
@@ -42,6 +43,10 @@ class User < ApplicationRecord
     followings.include?(user)
  end
 
+ # 別Ver(youtubeより参照) #あるユーザーがあるユーザー（引数に渡されたuser）にフォローされているか否かを判定するメソッド
+ #def is_followed_by?(user) #method名(引数)
+ #  reverse_of_relationships.find_by(following_id: user.id).present? #Railsにおいてpresentメソッドはオブジェクトであるレシーバーの値が存在すればtrue、存在しなければfalseを返すメソッドとなります。
+ #end
 
  def self.search_for(content, method)
     if method == 'perfect'

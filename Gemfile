@@ -63,3 +63,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 
 gem 'net-smtp'
+
+#ページネーション機能（カミナリ）を追加
+gem 'kaminari','~> 1.2.1'
