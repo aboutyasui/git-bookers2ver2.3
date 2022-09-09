@@ -10,6 +10,9 @@ class User < ApplicationRecord
   has_many :book_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :favorited_users, through: :favorites, source: :user
+  has_many :user_rooms, dependent: :destroy #DM用のアソシエーション(中間テーブル)
+  has_many :chats, dependent: :destroy
+  has_many :view_counts, dependent: :destroy
   has_one_attached :profile_image
 
   #バリデーション

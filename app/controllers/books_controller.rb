@@ -14,12 +14,12 @@ class BooksController < ApplicationController
      @books = Book.all
      render :index #投稿に失敗後新規投稿画面が表示される
     end
-
   end
 
   def index
+   #@book_detail = ViewCount.all
+
    @user = current_user
-   
    to  = Time.current.at_end_of_day
    from  = (to - 6.day).at_beginning_of_day #一週間分のレコードを取得
    books = Book.includes(:favorited_users).sort {|a,b|b.favorited_users.includes(:favorites).where(created_at: from...to).size <=> a.favorited_users.includes(:favorites).where(created_at: from...to).size}
@@ -27,10 +27,11 @@ class BooksController < ApplicationController
    #sortとは、昇順or降順に並び替えするメソッド(今回はb→aに降順)
    #b.favorited_users.size,a.favorited_users.sizeが表しているのはそれぞれ各投稿のいいね数。
    #where(created_at: from...to)は過去一週間
+
    @books=Kaminari.paginate_array(books).page(params[:page]).per(5)#ページネーションを使ってbooksを表示
    #Kaminari.paginate_arrayは配列オブジェクト(books)をページ付け可能配列に変換してくれます
    #.per(5)→１ページに表示されるのは５つ分まで
-   
+
    @book = Book.new
    @book_comments = BookComment.all#コメントを一覧ページに表示するためのインスタンス変数を定義する
   end
@@ -40,16 +41,23 @@ class BooksController < ApplicationController
    @user = @book.user#特定のbook（@book）に関連付けられた投稿全て（.user）を取得し@userに渡す
    @books = Book.new
    @book_comment = BookComment.new
-   #@post_comment = PostComment.new(meshiteroo_appでの書き方を参照)
    #コメントを投稿するためのインスタンス変数を定義する
+
+   #impressionist(@book, nil, unique: [:ip_address])
+   #bookの詳細ページにアクセスするとPV数が1つ増える。(ip_addressにてPV数をカウントします)
+
+   unless ViewCount.find_by(user_id: current_user.id, book_id: @book.id)
+     current_user.view_counts.create(book_id: @book.id)
+   end
+
   end
 
   def edit
-   @book = Book.find(params[:id])
+   #@book = Book.find(params[:id])
   end
 
   def update
-   @book =  Book.find(params[:id]) #更新するBookレコードを取得
+   #@book =  Book.find(params[:id]) #更新するBookレコードを取得
     if @book.update(book_params)#更新処理を分岐→条件：うまくupdateできるか否か
       redirect_to book_path(@book.id), notice: "You have updated book successfully."#その本のshowページへ戻る&フラッシュメッセージを取得
     else
@@ -58,7 +66,7 @@ class BooksController < ApplicationController
   end
 
   def destroy
-   @book =  Book.find(params[:id]) #削除するBookレコードを取得
+   #@book =  Book.find(params[:id]) #削除するBookレコードを取得
    @book.destroy #削除する処理
    redirect_to books_path #booksのindexページへ戻る
   end

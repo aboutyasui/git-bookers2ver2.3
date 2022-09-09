@@ -8,7 +8,7 @@
   <div class="col-md-9">
    <h2>Books</h2>
    <table class="table table-hover table-inverse"><!--タイトルや本文など今まで登録したすべての情報を表示(収納)する枠-->
-    <%= render 'index', books: @books %>
+    <%= render 'index', books: @books, book_detail: @book_detail %>
    </table>
    <%= paginate @books %>
   </div>

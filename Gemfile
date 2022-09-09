@@ -66,3 +66,6 @@ gem 'net-smtp'
 
 #ページネーション機能（カミナリ）を追加
 gem 'kaminari','~> 1.2.1'
+
+#投稿のPV(page view)数取得とPV数ランキングを実装します。
+gem 'impressionist'

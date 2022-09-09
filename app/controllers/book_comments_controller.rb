@@ -18,7 +18,7 @@ class BookCommentsController < ApplicationController
   end
 
   private
-
+  #commentのストロングパラメータ
   def book_comment_params
     params.require(:book_comment).permit(:comment)
   end

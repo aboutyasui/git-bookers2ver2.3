@@ -3,8 +3,13 @@ class Book < ApplicationRecord
   belongs_to :user##1:N の「N」側にあたるモデルに、belongs_to を記載する必要がある
   has_many :book_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
-  has_many :favorited_users, through: :favorites, source: :user 
-  
+  has_many :favorited_users, through: :favorites, source: :user
+  has_many :view_counts, dependent: :destroy
+
+  is_impressionable counter_cache: true
+  #is_impressionable → Bookモデルでimpressionistを使用できるようにします。
+  #counter_cache: true → impressions_countカラムがupdateされるようにします。
+
   #バリデーション
    validates :title,presence: true
    validates :body, length: { maximum: 200 },presence: true

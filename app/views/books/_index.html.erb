@@ -20,7 +20,9 @@
       <td class="favorite_btn_<%=book.id %>"><!--この箇所の更新を指定するために、変更したい箇所にidで名前をつけます(部分的に更新したい箇所)-->
         <%= render "favorites/btn", book: book %>
       </td>
-      <!--eachメソッド内でのrender処理なので、インスタンス変数は存在しません。bookをbookに渡しています。(book: book)-->
+      <td>
+        閲覧数:<!--%= book.impressions_count %--><%= book.view_counts.count %>
+      </td>
     </tr>
   <% end %>
 </tbody>

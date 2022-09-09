@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
 
   devise_for :users
+
+  get 'chat/:id', to: 'chats#show', as: 'chat'
+  resources :chats, only: [:create]
+
+
   resources :books,only: [:index, :show, :edit, :create, :destroy, :update] do
    resources :book_comments,only: [:create, :destroy]
    resource :favorites,only: [:create, :destroy]
@@ -14,6 +19,7 @@ Rails.application.routes.draw do
         get 'following' => 'relationships#followings', as:'followings'#フォローされた方の情報を取得（書き方の1通り目）
       end
       get :followers, on: :member #フォローした方の情報を取得(書き方の2通り目)
+
     end
   end
   patch 'users/:id' => 'users#update', as: 'update_user'

@@ -1,15 +1,15 @@
 <table class='table'>
   <tr><%= image_tag user.get_profile_image(100,100) %></tr>
   <tr>
-	  <th>name</th>
+	  <th colspan="5">name</th>
 	  <th><%= user.name %></th>
   </tr>
   <tr>
-	  <th>introduction</th>
+	  <th colspan="5">introduction</th>
 	  <th><%= user.introduction %></th>
   </tr>
   <tr>
-    <th>follows</th>
+    <th colspan="5">follows</th>
     <th>
       <%= link_to followings_user_relationship_path(user,user.id) do %>
         <%= user.followings.count %>
@@ -17,7 +17,7 @@
     </th><!--そのユーザーがフォローした人数を表示-->
   </th>
   <tr>
-    <th>followers</th>
+    <th colspan="5">followers</th>
     <th>
       <%= link_to followers_user_relationship_path(user,user.id) do %>
         <%= user.followers.count %>
@@ -28,11 +28,17 @@
      <th colspan="5">
       <% unless user == current_user %><!--「unless」は条件が偽の時に以下の処理をする宣言-->
         <% if current_user.following?(user) %>
-          <%= link_to 'フォローを外す', user_relationship_path(user.id, current_user.id), method: :delete, class: "btn-sm btn-danger" %>
+          <%= link_to '解除', user_relationship_path(user.id, current_user.id), method: :delete, class: "btn-sm btn-danger" %>
         <% else %>
-          <%= link_to 'フォローする', user_relationships_path(user.id), method: :post, class:"btn-sm btn-success" %>
+          <%= link_to 'フォロー', user_relationships_path(user.id), method: :post, class:"btn-sm btn-success" %>
         <% end %>
       <% end %>
+     </th>
+     <th colspan="5">
+        <!-- current_userと@userが一致していない場合に`Begin Chat`を表示 -->
+        <% if current_user != @user %>
+          <%= link_to 'Begin Chat', chat_path(@user.id) %>
+        <% end %>
      </th>
   </tr>
 
