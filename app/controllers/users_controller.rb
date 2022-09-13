@@ -20,8 +20,22 @@ class UsersController < ApplicationController
 
   def show
    @user = User.find(params[:id])#1:N→user:books
-   @books = @user.books#特定のユーザ（@user）に関連付けられた投稿全て（.books）を取得し@booksに渡す
+
+   @books = @user.books.page(params[:page]).reverse_order#特定のユーザ（@user）に関連付けられた投稿全て（.books）を取得し@booksに渡す
+   #pageメソッド=kaminariを導入すると、モデルクラスにpageメソッドが定義される。
+   #このメソッドは、ページネーションにおけるページ数を指定。
+   #ビューのリクエストの際paramsの中にpageというキーが追加されて、その値がビューで指定したページ番号となる。よって、pageの引数はparams[:page]となる。
+   #.reverse_order=「降順」に取得するメソッド
+
    @book = Book.new
+
+   #昨日と前日、前日比の情報をviewに表示するための変数
+   @today_book = @books.created_today
+   @yesterday_book = @books.created_yesterday
+   #bookモデルで定めたスコープの名前をここで使用しています。
+   @this_week_book = @books.created_this_week
+   @last_week_book = @books.created_last_week
+
   end
 
   def edit

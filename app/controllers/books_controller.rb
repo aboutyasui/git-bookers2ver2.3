@@ -43,6 +43,8 @@ class BooksController < ApplicationController
    @book_comment = BookComment.new
    #コメントを投稿するためのインスタンス変数を定義する
 
+
+
    #impressionist(@book, nil, unique: [:ip_address])
    #bookの詳細ページにアクセスするとPV数が1つ増える。(ip_addressにてPV数をカウントします)
 
