@@ -1,23 +1,7 @@
-# README
+# Ver2.3の概要
 
-カリキュラム用のアプリ
+Ver2.2に以下の機能を追加しました。<br>
+・ユーザー詳細ページに今日と昨日の投稿数を表示<br>
+・ユーザー詳細ページに今週と先週の投稿数を表示<br>
+・それぞれの前後の比率を表示
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
